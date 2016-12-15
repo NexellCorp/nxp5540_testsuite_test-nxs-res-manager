@@ -91,10 +91,14 @@ static int test_multitap(int fd)
 	/* strcpy(req.name, "cl-mul-fi-dmaw"); */
 	req.count = 4;
 	req.array[0] = NXS_FUNCTION_VIP_CLIPPER;
-	req.array[1] = NXS_FUNCTION_MULTITAP;
-	req.array[2] = NXS_FUNCTION_FIFO;
-	req.array[3] = NXS_FUNCTION_DMAW;
-	req.sibling_handle = -1;
+	req.array[1] = 0;
+	req.array[2] = NXS_FUNCTION_MULTITAP;
+	req.array[3] = NXS_FUNCTION_ANY;
+	req.array[4] = NXS_FUNCTION_FIFO;
+	req.array[5] = NXS_FUNCTION_ANY;
+	req.array[6] = NXS_FUNCTION_DMAW;
+	req.array[7] = NXS_FUNCTION_ANY;
+	req.option.sibling_handle = -1;
 
 	ret = ioctl(fd, NXS_REQUEST_FUNCTION, &req);
 	if (ret) {
@@ -104,20 +108,24 @@ static int test_multitap(int fd)
 	}
 
 	fprintf(stdout, "%s: success: handle %d, sibling handle %d\n",
-		__func__, req.handle, req.sibling_handle);
+		__func__, req.handle, req.option.sibling_handle);
 	handle_first = req.handle;
 
-	sibling_handle = req.sibling_handle;
+	sibling_handle = handle_first;
 
 	bzero(&req, sizeof(req));
 
 	strcpy(req.name, "vip_clipper-multitap-fifo-dmaw");
 	req.count = 4;
 	req.array[0] = NXS_FUNCTION_VIP_CLIPPER;
-	req.array[1] = NXS_FUNCTION_MULTITAP;
-	req.array[2] = NXS_FUNCTION_FIFO;
-	req.array[3] = NXS_FUNCTION_DMAW;
-	req.sibling_handle = sibling_handle;
+	req.array[1] = 0;
+	req.array[2] = NXS_FUNCTION_MULTITAP;
+	req.array[3] = NXS_FUNCTION_ANY;
+	req.array[4] = NXS_FUNCTION_FIFO;
+	req.array[5] = NXS_FUNCTION_ANY;
+	req.array[6] = NXS_FUNCTION_DMAW;
+	req.array[7] = NXS_FUNCTION_ANY;
+	req.option.sibling_handle = sibling_handle;
 
 	ret = ioctl(fd, NXS_REQUEST_FUNCTION, &req);
 	if (ret) {
@@ -149,9 +157,12 @@ static int test_create_dmar_csc_dmaw(int fd)
 	strcpy(req.name, "dmar-csc-dmaw");
 	req.count = 3;
 	req.array[0] = NXS_FUNCTION_DMAR;
-	req.array[1] = NXS_FUNCTION_CSC;
-	req.array[2] = NXS_FUNCTION_DMAW;
-	req.sibling_handle = -1;
+	req.array[1] = NXS_FUNCTION_ANY;
+	req.array[2] = NXS_FUNCTION_CSC;
+	req.array[3] = NXS_FUNCTION_ANY;
+	req.array[4] = NXS_FUNCTION_DMAW;
+	req.array[5] = NXS_FUNCTION_ANY;
+	req.option.sibling_handle = -1;
 
 	ret = ioctl(fd, NXS_REQUEST_FUNCTION, &req);
 	if (ret) {
